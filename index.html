@@ -2,8 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <style>
+	h2 {
+	  text-align: center;
+	}
+
+	
+  </style>
   <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
     <script type="text/javascript">
       function draw(data) {
       
@@ -12,7 +19,9 @@
       */
 
           "use strict";
-          var margin = 100, width = 1400 - margin, height = 600 - margin;
+		  var mymap = d3.map (data);
+		 
+          var margin = 200, width = 1400 - margin, height = 800 - margin;
           d3.select("body").append("h2").text("Batter Performance");
           /* debugger; */
           var svg = d3.select("body")
@@ -21,21 +30,33 @@
               .attr("height", height + margin)
             .append('g')
                 .attr('class','chart');
-
+		            
       /*
         Dimple.js Chart construction code
       */
 
           var myChart = new dimple.chart(svg, data);
-	myChart.setBounds(60, 30, 500, 330)
-          var x = myChart.addLogAxis("x", "HR"); 
-          var y = myChart.addMeasureAxis("y", "avg");
-          /* #x.dateParseFormat = "%Y";
-          ###x.tickFormat = "%Y";
-          ### myChart.addSeries(null, dimple.plot.line); */
-          myChart.addSeries(["name","handedness"], dimple.plot.bubble);
-	  myChart.addLegend(200, 10, 360, 20, "right");
+		  myChart.setMargins(100,50,300,120)
+          var y = myChart.addLogAxis("y", "HR");
+		  y.title = "Number of Home Runs";
+		  y.overrideMin=1;
+          var x = myChart.addMeasureAxis("x", "avg");
+		  x.title = "Hitting Rate"
+          x.tickFormat = ".3f";
+		  x.overrideMin =0.001;
+          var bubble_series = myChart.addSeries(["name","handedness"], dimple.plot.bubble);
+		  myChart.assignColor("L","#1b9e77");
+		  myChart.assignColor("B","#d95f02");
+		  myChart.assignColor("R","#7570b3");
+	      var legend = myChart.addLegend("60%", 30, 500, 100, "left");
+		  legend.horizontalPadding=75;
+		  debugger;
           myChart.draw();
+		  debugger;
+		  
+		  svg.selectAll("text.dimple-l").text("Left-handed");
+		  svg.selectAll("text.dimple-r").text("Right-handed");
+		  svg.selectAll("text.dimple-b").text("Both-handed");
         };
       </script>
   </head>
