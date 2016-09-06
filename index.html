@@ -9,20 +9,29 @@
 
 	
   </style>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="./js/dimple.v2.1.6.min.js"></script>
+
     <script type="text/javascript">
+	  
       function draw(data) {
-      
+      "use strict";
+	  
+	  /*
+	   Generating data_filtered, a subset of data that covers data points that are the bottom
+	   25% in their euclidean distance to the group medians.
+	  */
+		var data_filtered = data.filter ( function (el) {
+		  return ( Number (el.distance_pctrank) <= 25 );
+		}); 
+
+		
       /*
         D3.js setup code
       */
 
-          "use strict";
-		  var mymap = d3.map (data);
-		 
           var margin = 200, width = 1400 - margin, height = 800 - margin;
-          d3.select("body").append("h2").text("Batter Performance");
+          d3.select("body").append("h2").text("Performance of 1,159 baseball players");
           /* debugger; */
           var svg = d3.select("body")
             .append("svg")
@@ -36,15 +45,15 @@
       */
 
           var myChart = new dimple.chart(svg, data);
-		  myChart.setMargins(100,50,300,120)
+		  myChart.setMargins(100, 50, 300, 120)
           var y = myChart.addLogAxis("y", "HR");
-		  y.title = "Number of Home Runs";
-		  y.overrideMin=1;
+		  y.title = "Home Runs";
           var x = myChart.addMeasureAxis("x", "avg");
-		  x.title = "Hitting Rate"
+		  x.title = "Battling Average"
           x.tickFormat = ".3f";
-		  x.overrideMin =0.001;
-          var bubble_series = myChart.addSeries(["name","handedness"], dimple.plot.bubble);
+		  var bubble_series = myChart.addSeries (["name","handedness"], dimple.plot.bubble);
+		  var area_series = myChart.addSeries (["name", "handedness"], dimple.plot.area);
+		  area_series.data = data_filtered; 
 		  myChart.assignColor("L","#1b9e77");
 		  myChart.assignColor("B","#d95f02");
 		  myChart.assignColor("R","#7570b3");
@@ -53,7 +62,6 @@
 		  debugger;
           myChart.draw();
 		  debugger;
-		  
 		  svg.selectAll("text.dimple-l").text("Left-handed");
 		  svg.selectAll("text.dimple-r").text("Right-handed");
 		  svg.selectAll("text.dimple-b").text("Both-handed");
@@ -66,7 +74,7 @@
     Use D3 (not dimple.js) to load the TSV file
     and pass the contents of it to the draw function
     */
-  d3.csv("baseball_data.csv", draw);
+  d3.csv("./data/baseball_data_remodeled.csv", draw);
   </script>
 </body>
 </html>
