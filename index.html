@@ -6,11 +6,16 @@
 	h2 {
 	  text-align: center;
 	}
-
+	.dimple-custom-series-area {
+	  fill-opacity: 0.2
+	}
+	svg {
+	  position: relative;
+	}
 	
   </style>
   <script src="https://d3js.org/d3.v3.min.js"></script>
-  <script src="./js/dimple.v2.1.6.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 
     <script type="text/javascript">
 	  
@@ -30,13 +35,14 @@
         D3.js setup code
       */
 
-          var margin = 200, width = 1400 - margin, height = 800 - margin;
-          d3.select("body").append("h2").text("Performance of 1,159 baseball players");
-          /* debugger; */
-          var svg = d3.select("body")
+        var margin = 200, width = 1400 - margin, height = 800 - margin;
+		  d3.select("body").append("h2").text("Performance of 1,159 baseball players");
+         /* debugger; */
+		  var svg = d3.select("body")
             .append("svg")
               .attr("width", width + margin)
               .attr("height", height + margin)
+			  .attr("align", "center")
             .append('g')
                 .attr('class','chart');
 		            
@@ -45,26 +51,42 @@
       */
 
           var myChart = new dimple.chart(svg, data);
-		  myChart.setMargins(100, 50, 300, 120)
+		  /* myChart.setMargins(100, 50, 100, 120)*/
           var y = myChart.addLogAxis("y", "HR");
 		  y.title = "Home Runs";
+		  y.fontSize = 'auto';
           var x = myChart.addMeasureAxis("x", "avg");
 		  x.title = "Battling Average"
           x.tickFormat = ".3f";
+		  x.fontSize = 'auto';
 		  var bubble_series = myChart.addSeries (["name","handedness"], dimple.plot.bubble);
 		  var area_series = myChart.addSeries (["name", "handedness"], dimple.plot.area);
+		  debugger;
 		  area_series.data = data_filtered; 
 		  myChart.assignColor("L","#1b9e77");
 		  myChart.assignColor("B","#d95f02");
 		  myChart.assignColor("R","#7570b3");
-	      var legend = myChart.addLegend("60%", 30, 500, 100, "left");
-		  legend.horizontalPadding=75;
+	      var legend1 = myChart.addLegend("10%", 30, 500, 100, "left", bubble_series);
+		  var legend2 = myChart.addLegend("30%", 30, "60%", 100, "right", area_series);
+		  legend1.horizontalPadding=100;
+		  legend1.fontSize = '15px';
+		  legend2.horizontalPadding=200;
+		  legend2.fontSize = '15px';
 		  debugger;
           myChart.draw();
 		  debugger;
+		  d3.selectAll('.dimple-bubble').attr("r",4);
 		  svg.selectAll("text.dimple-l").text("Left-handed");
 		  svg.selectAll("text.dimple-r").text("Right-handed");
 		  svg.selectAll("text.dimple-b").text("Both-handed");
+		  legend2.shapes.selectAll("rect").attr("fill-opacity",0.2).style("stroke-width","3px")
+		  /* Code inspired from mrtsherman's reply at http://stackoverflow.com/questions/9219346/jquery-this-html-returns-undefined */
+		
+		  legend2.shapes.selectAll("text").text( function () {
+			return ( "Middle 25% of " + this.textContent );
+		  })
+		  d3.selectAll('.dimple-custom-series-area').style('stroke-width','3px');
+		  
         };
       </script>
   </head>
