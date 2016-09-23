@@ -23,8 +23,8 @@
         D3.js setup code
       */
 
-        var margin = 200, width = 1400 - margin, height = 800 - margin;
-		  d3.select("body").append("h2").text("Handedness and Performance of 1,159 baseball players");
+        var margin = 200, width = 1000 - margin, height = 800 - margin;
+		  d3.select("body").append("h2").text("Mean Battling Averages and Home Runs of 1,157 Baseball Players by Handedness");
          /* debugger; */
 		  var svg = d3.select("body")
             .append("svg")
@@ -39,15 +39,15 @@
       */
 
           var myChart = new dimple.chart(svg, data);
-		  /* myChart.setMargins(100, 50, 100, 120)*/
+		  myChart.setMargins(80, 50, 80, 120);
           var y = myChart.addMeasureAxis("y", "HR");
-		  y.title = "Home Runs";
+		  y.title = "Mean Home Runs";
 		  y.fontSize = 'auto';
 		  y.overrideMin = 20;
 		  y.overrideMax = 70;
 		  y.showGridlines = false; 
           var x = myChart.addMeasureAxis("x", "avg");
-		  x.title = "Battling Average"
+		  x.title = "Mean Battling Average"
           x.tickFormat = ".3f";
 		  x.fontSize = 'auto';
 		  x.overrideMin = 0.16; 
