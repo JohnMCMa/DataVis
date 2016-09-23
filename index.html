@@ -5,6 +5,7 @@
   <style>
 	h2 {
 	  text-align: center;
+	  font-family: sans-serif;
 	}
 	svg {
 	  position: relative;
@@ -23,7 +24,7 @@
         D3.js setup code
       */
 
-        var margin = 200, width = 1000 - margin, height = 800 - margin;
+        var margin = 200, width = 1400 - margin , height = 800 - margin;
 		  d3.select("body").append("h2").text("Mean Battling Averages and Home Runs of 1,157 Baseball Players by Handedness");
          /* debugger; */
 		  var svg = d3.select("body")
@@ -39,7 +40,7 @@
       */
 
           var myChart = new dimple.chart(svg, data);
-		  myChart.setMargins(80, 50, 80, 120);
+		  /*myChart.setMargins(80, 50, 80, 120);*/
           var y = myChart.addMeasureAxis("y", "HR");
 		  y.title = "Mean Home Runs";
 		  y.fontSize = 'auto';
@@ -71,6 +72,31 @@
 		  svg.selectAll("text.dimple-r").text("Right-handed");
 		  svg.selectAll("text.dimple-b").text("Both-handed");
 		  
+		  /* Appending text to circles. Code comes from http://stackoverflow.com/questions/11857615/placing-labels-at-the-center-of-nodes-in-d3-js*/
+		  var l_count = svg.select("circle.dimple-r").datum().zCount;
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-r").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-r").attr("cy"))
+		  .attr ("font-size", "30px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-r").datum().zCount);
+		  
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-b").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-b").attr("cy"))
+		  .attr ("font-size", "10px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-b").datum().zCount);
+		  
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-l").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-l").attr("cy"))
+		  .attr ("font-size", "20px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-l").datum().zCount);
         };
       </script>
   </head>
