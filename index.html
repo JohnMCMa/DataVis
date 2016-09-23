@@ -73,7 +73,6 @@
 		  svg.selectAll("text.dimple-b").text("Both-handed");
 		  
 		  /* Appending text to circles. Code comes from http://stackoverflow.com/questions/11857615/placing-labels-at-the-center-of-nodes-in-d3-js*/
-		  var l_count = svg.select("circle.dimple-r").datum().zCount;
 		  svg.select('g').append("text")
 		  .attr ("dx", svg.select("circle.dimple-r").attr("cx"))
 		  .attr ("dy", svg.select("circle.dimple-r").attr("cy"))
