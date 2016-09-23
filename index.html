@@ -6,9 +6,6 @@
 	h2 {
 	  text-align: center;
 	}
-	.dimple-custom-series-area {
-	  fill-opacity: 0.2
-	}
 	svg {
 	  position: relative;
 	}
@@ -21,22 +18,13 @@
 	  
       function draw(data) {
       "use strict";
-	  
-	  /*
-	   Generating data_filtered, a subset of data that covers data points that are the bottom
-	   25% in their euclidean distance to the group medians.
-	  */
-		var data_filtered = data.filter ( function (el) {
-		  return ( Number (el.distance_pctrank) <= 25 );
-		}); 
-
-		
+	  	
       /*
         D3.js setup code
       */
 
         var margin = 200, width = 1400 - margin, height = 800 - margin;
-		  d3.select("body").append("h2").text("Performance of 1,159 baseball players");
+		  d3.select("body").append("h2").text("Handedness and Performance of 1,159 baseball players");
          /* debugger; */
 		  var svg = d3.select("body")
             .append("svg")
@@ -52,40 +40,36 @@
 
           var myChart = new dimple.chart(svg, data);
 		  /* myChart.setMargins(100, 50, 100, 120)*/
-          var y = myChart.addLogAxis("y", "HR");
+          var y = myChart.addMeasureAxis("y", "HR");
 		  y.title = "Home Runs";
 		  y.fontSize = 'auto';
+		  y.overrideMin = 20;
+		  y.overrideMax = 70;
+		  y.showGridlines = false; 
           var x = myChart.addMeasureAxis("x", "avg");
 		  x.title = "Battling Average"
           x.tickFormat = ".3f";
 		  x.fontSize = 'auto';
-		  var bubble_series = myChart.addSeries (["name","handedness"], dimple.plot.bubble);
-		  var area_series = myChart.addSeries (["name", "handedness"], dimple.plot.area);
+		  x.overrideMin = 0.16; 
+		  x.overrideMax = 0.21;
+		  x.showGridlines = false; 
+		  var z = myChart.addMeasureAxis("z", "name");
+		  var bubble_series = myChart.addSeries (["handedness"], dimple.plot.bubble );
+		  bubble_series.aggregate=dimple.aggregateMethod.avg;
 		  debugger;
-		  area_series.data = data_filtered; 
 		  myChart.assignColor("L","#1b9e77");
 		  myChart.assignColor("B","#d95f02");
 		  myChart.assignColor("R","#7570b3");
-	      var legend1 = myChart.addLegend("10%", 30, "40%", 100, "left", bubble_series);
-		  var legend2 = myChart.addLegend("41%", 30, "60%", 100, "left", area_series);
+	      var legend1 = myChart.addLegend("10%", 30, "80%", 100, "left", bubble_series);
 		  legend1.horizontalPadding=100;
 		  legend1.fontSize = '15px';
-		  legend2.horizontalPadding=200;
-		  legend2.fontSize = '15px';
 		  debugger;
           myChart.draw();
 		  debugger;
-		  d3.selectAll('.dimple-bubble').attr("r",4);
+		  /*d3.selectAll('.dimple-bubble').attr("r",4);*/
 		  svg.selectAll("text.dimple-l").text("Left-handed");
 		  svg.selectAll("text.dimple-r").text("Right-handed");
 		  svg.selectAll("text.dimple-b").text("Both-handed");
-		  legend2.shapes.selectAll("rect").attr("fill-opacity",0.2).style("stroke-width","3px")
-		  /* Code inspired from mrtsherman's reply at http://stackoverflow.com/questions/9219346/jquery-this-html-returns-undefined */
-		
-		  legend2.shapes.selectAll("text").text( function () {
-			return ( "Middle 25% of " + this.textContent );
-		  })
-		  d3.selectAll('.dimple-custom-series-area').style('stroke-width','3px');
 		  
         };
       </script>
@@ -96,7 +80,7 @@
     Use D3 (not dimple.js) to load the TSV file
     and pass the contents of it to the draw function
     */
-  d3.csv("./data/baseball_data_remodeled.csv", draw);
+  d3.csv("./baseball_data.csv", draw);
   </script>
 </body>
 </html>
