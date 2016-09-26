@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <style>
+ <style>
 	h2 {
 	  text-align: center;
 	  font-family: sans-serif;
@@ -24,7 +24,11 @@
         D3.js setup code
       */
 
+<<<<<<< HEAD
         var margin = 200, width = 1400 - margin , height = 800 - margin;
+=======
+        var margin = 200, width = 1400 - margin, height = 800 - margin;
+>>>>>>> origin/Handedness-group-only
 		  d3.select("body").append("h2").text("Mean Battling Averages and Home Runs of 1,157 Baseball Players by Handedness");
          /* debugger; */
 		  var svg = d3.select("body")
@@ -41,15 +45,25 @@
 
           var myChart = new dimple.chart(svg, data);
 		  /*myChart.setMargins(80, 50, 80, 120);*/
+<<<<<<< HEAD
           var y = myChart.addMeasureAxis("y", "HR");
+=======
+                  var y = myChart.addMeasureAxis("y", "HR");
+>>>>>>> origin/Handedness-group-only
 		  y.title = "Mean Home Runs";
 		  y.fontSize = 'auto';
 		  y.overrideMin = 20;
 		  y.overrideMax = 70;
 		  y.showGridlines = false; 
+<<<<<<< HEAD
           var x = myChart.addMeasureAxis("x", "avg");
 		  x.title = "Mean Battling Average"
           x.tickFormat = ".3f";
+=======
+                  var x = myChart.addMeasureAxis("x", "avg");
+		  x.title = "Mean Battling Average";
+                       x.tickFormat = ".3f";
+>>>>>>> origin/Handedness-group-only
 		  x.fontSize = 'auto';
 		  x.overrideMin = 0.16; 
 		  x.overrideMax = 0.21;
@@ -57,6 +71,7 @@
 		  var z = myChart.addMeasureAxis("z", "name");
 		  var bubble_series = myChart.addSeries (["handedness"], dimple.plot.bubble );
 		  bubble_series.aggregate=dimple.aggregateMethod.avg;
+<<<<<<< HEAD
 		  debugger;
 		  myChart.assignColor("L","#1b9e77");
 		  myChart.assignColor("B","#d95f02");
@@ -67,10 +82,47 @@
 		  debugger;
           myChart.draw();
 		  debugger;
+=======
+		  myChart.assignColor("L","#1b9e77");
+		  myChart.assignColor("B","#d95f02");
+		  myChart.assignColor("R","#7570b3");
+	          var legend1 = myChart.addLegend("10%", 30, "90%", 100, "left", bubble_series);
+		  legend1.horizontalPadding=100;
+		  legend1.fontSize = '15px';
+          	  myChart.draw();
+>>>>>>> origin/Handedness-group-only
 		  /*d3.selectAll('.dimple-bubble').attr("r",4);*/
 		  svg.selectAll("text.dimple-l").text("Left-handed");
 		  svg.selectAll("text.dimple-r").text("Right-handed");
 		  svg.selectAll("text.dimple-b").text("Both-handed");
+<<<<<<< HEAD
+=======
+		  
+		/* Appending text to circles. Code comes from https://www.dashingd3js.com/svg-text-element */
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-r").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-r").attr("cy"))
+		  .attr ("font-size", "30px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-r").datum().zCount);
+		  
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-b").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-b").attr("cy"))
+		  .attr ("font-size", "10px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-b").datum().zCount);
+		  
+		  svg.select('g').append("text")
+		  .attr ("dx", svg.select("circle.dimple-l").attr("cx"))
+		  .attr ("dy", svg.select("circle.dimple-l").attr("cy"))
+		  .attr ("font-size", "20px")
+		  .style ("font-family", "sans-serif")
+		  .attr ("text-anchor","middle")
+		  .text (svg.select("circle.dimple-l").datum().zCount);
+>>>>>>> origin/Handedness-group-only
 		  
 		  /* Appending text to circles. Code comes from http://stackoverflow.com/questions/11857615/placing-labels-at-the-center-of-nodes-in-d3-js*/
 		  svg.select('g').append("text")
