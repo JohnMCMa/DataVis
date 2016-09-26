@@ -7,8 +7,13 @@
 	  text-align: center;
 	  font-family: sans-serif;
 	}
+	
 	svg {
 	  position: relative;
+	}
+	
+	.circle-label {
+	  font-family: sans-serif;
 	}
 	
   </style>
@@ -24,130 +29,93 @@
         D3.js setup code
       */
 
-<<<<<<< HEAD
-        var margin = 200, width = 1400 - margin , height = 800 - margin;
-=======
-        var margin = 200, width = 1400 - margin, height = 800 - margin;
->>>>>>> origin/Handedness-group-only
-		  d3.select("body").append("h2").text("Mean Battling Averages and Home Runs of 1,157 Baseball Players by Handedness");
-         /* debugger; */
-		  var svg = d3.select("body")
-            .append("svg")
-              .attr("width", width + margin)
-              .attr("height", height + margin)
-			  .attr("align", "center")
+		 var margin = 200, width = 1400 - margin, height = 800 - margin;
+		 
+		 d3.select("body").append("h2").text("Mean Battling Averages and Home Runs of 1,157 Baseball Players by Handedness");
+		 
+		 var svg = d3.select("body")
+			.append("svg")
+			   .attr("width", width + margin)
+			   .attr("height", height + margin)
+			   .attr("align", "center")
             .append('g')
-                .attr('class','chart');
+			   .attr('class','chart');
 		            
       /*
         Dimple.js Chart construction code
       */
 
-          var myChart = new dimple.chart(svg, data);
-		  /*myChart.setMargins(80, 50, 80, 120);*/
-<<<<<<< HEAD
-          var y = myChart.addMeasureAxis("y", "HR");
-=======
-                  var y = myChart.addMeasureAxis("y", "HR");
->>>>>>> origin/Handedness-group-only
-		  y.title = "Mean Home Runs";
-		  y.fontSize = 'auto';
-		  y.overrideMin = 20;
-		  y.overrideMax = 70;
-		  y.showGridlines = false; 
-<<<<<<< HEAD
-          var x = myChart.addMeasureAxis("x", "avg");
-		  x.title = "Mean Battling Average"
-          x.tickFormat = ".3f";
-=======
-                  var x = myChart.addMeasureAxis("x", "avg");
-		  x.title = "Mean Battling Average";
-                       x.tickFormat = ".3f";
->>>>>>> origin/Handedness-group-only
-		  x.fontSize = 'auto';
-		  x.overrideMin = 0.16; 
-		  x.overrideMax = 0.21;
-		  x.showGridlines = false; 
-		  var z = myChart.addMeasureAxis("z", "name");
-		  var bubble_series = myChart.addSeries (["handedness"], dimple.plot.bubble );
-		  bubble_series.aggregate=dimple.aggregateMethod.avg;
-<<<<<<< HEAD
-		  debugger;
-		  myChart.assignColor("L","#1b9e77");
-		  myChart.assignColor("B","#d95f02");
-		  myChart.assignColor("R","#7570b3");
-	      var legend1 = myChart.addLegend("10%", 30, "80%", 100, "left", bubble_series);
-		  legend1.horizontalPadding=100;
-		  legend1.fontSize = '15px';
-		  debugger;
-          myChart.draw();
-		  debugger;
-=======
-		  myChart.assignColor("L","#1b9e77");
-		  myChart.assignColor("B","#d95f02");
-		  myChart.assignColor("R","#7570b3");
-	          var legend1 = myChart.addLegend("10%", 30, "90%", 100, "left", bubble_series);
-		  legend1.horizontalPadding=100;
-		  legend1.fontSize = '15px';
-          	  myChart.draw();
->>>>>>> origin/Handedness-group-only
-		  /*d3.selectAll('.dimple-bubble').attr("r",4);*/
-		  svg.selectAll("text.dimple-l").text("Left-handed");
-		  svg.selectAll("text.dimple-r").text("Right-handed");
-		  svg.selectAll("text.dimple-b").text("Both-handed");
-<<<<<<< HEAD
-=======
+		 /* Declaring the Dimple.js chart object */
+         var myChart = new dimple.chart(svg, data);
+
+		 /* Declaring the y-axis for HR, manually setting the range, adding labels,
+		 and removing grid lines.*/
+         var y = myChart.addMeasureAxis("y", "HR");
+		 y.title = "Mean Home Runs";
+		 y.fontSize = 'auto';
+		 y.overrideMin = 20;
+		 y.overrideMax = 70;
+		 y.showGridlines = false;
+		 
+		 /* Declaring the x-axis for avg, manually setting the range, adding labels,
+		 removing grid lines, and make sure the ticks are correct to 3 decimal places.*/
+         var x = myChart.addMeasureAxis("x", "avg");
+		 x.title = "Mean Battling Average"
+         x.tickFormat = ".3f";
+		 x.fontSize = 'auto';
+		 x.overrideMin = 0.16; 
+		 x.overrideMax = 0.21;
+		 x.showGridlines = false;
+		 
+		 /* Setting up the Z-axis for bubble sizes based on the count of unique
+		 player names.*/
+		 var z = myChart.addMeasureAxis("z", "name");
+		 
+		 /*Adding a bubble graph series, where the data are segregated by handedness
+		 and their x- and y-coordinates are represented by group averages.*/
+		 var bubble_series = myChart.addSeries (["handedness"], dimple.plot.bubble );
+		 bubble_series.aggregate = dimple.aggregateMethod.avg;
+		 /*bubble_series.z._scale = bubble_series.z._scale= function u(n) {return Math.sqrt(o(n))}*/
+		 
+		 /* Overriding Dimple.js' default color scheme with Colorbrewer. */
+		 myChart.assignColor("L","#1b9e77");
+		 myChart.assignColor("B","#d95f02");
+		 myChart.assignColor("R","#7570b3");
+		 
+		 /* Adding chart legends. Manually increasing the padding between legends
+		 such that the legend text added later do not overlap other legends.
+		 Font size increased for legiability.*/
+	     var legend1 = myChart.addLegend("10%", 30, "90%", 100, "left", bubble_series);
+		 legend1.horizontalPadding=300;
+		 legend1.fontSize = '20px';
+		 
+         myChart.draw();
+		 
+		 /*The line ensures the tooltip text uses the more indicative "Number of Players"
+		 instead of "name."
+		 It is called after myChart.draw() to avoid the renderer calling a non-existing variable. */
+		 z.measure = "Number of Players";
+		 
+		 /* Dimple.js by default scales bubbles in bubble graphs by radius. (Lines 32-49 of _helpers.js in their source),
+		 which would cause some misleading results, since doubling the data would quadiple the bubble size.
+		 To be precise, this line replaces the "r" variables in the background DOM data with 30*sqrt(r); the constant mutliple
+		 of 30 was added to avoid the resulting bubbles from being too small from the square-root transformation. */
+		 d3.selectAll('circle').each(function(d,i) { var elt = d3.select (this); elt.datum().r = 30 * Math.sqrt (elt.datum().r ); } );
+		 
+		 /* myChart.draw() needs to be called again with noDataChange flag set to false; else the radii won't be updated. */
+		 myChart.draw(null, true);
+		 
+		 /*
+		  Changing the text on the legends. By default the legend text is just "L", "R" and "B", which is non-indicative.
+		  These lines changes "L", "R" and "B" into their human-readable counterparts, and add to the legend the number of players
+		  in each group.
 		  
-		/* Appending text to circles. Code comes from https://www.dashingd3js.com/svg-text-element */
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-r").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-r").attr("cy"))
-		  .attr ("font-size", "30px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-r").datum().zCount);
-		  
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-b").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-b").attr("cy"))
-		  .attr ("font-size", "10px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-b").datum().zCount);
-		  
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-l").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-l").attr("cy"))
-		  .attr ("font-size", "20px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-l").datum().zCount);
->>>>>>> origin/Handedness-group-only
-		  
-		  /* Appending text to circles. Code comes from http://stackoverflow.com/questions/11857615/placing-labels-at-the-center-of-nodes-in-d3-js*/
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-r").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-r").attr("cy"))
-		  .attr ("font-size", "30px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-r").datum().zCount);
-		  
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-b").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-b").attr("cy"))
-		  .attr ("font-size", "10px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-b").datum().zCount);
-		  
-		  svg.select('g').append("text")
-		  .attr ("dx", svg.select("circle.dimple-l").attr("cx"))
-		  .attr ("dy", svg.select("circle.dimple-l").attr("cy"))
-		  .attr ("font-size", "20px")
-		  .style ("font-family", "sans-serif")
-		  .attr ("text-anchor","middle")
-		  .text (svg.select("circle.dimple-l").datum().zCount);
+		  This needs to be called the last as myChart.draw() resets the legend text.
+		 */
+		 svg.selectAll("text.dimple-l").text("Left-handed ( "+svg.select("circle.dimple-l").datum().zValue+" players)");
+		 svg.selectAll("text.dimple-r").text("Right-handed ("+svg.select("circle.dimple-r").datum().zValue+" players)");
+		 svg.selectAll("text.dimple-b").text("Both-handed ("+svg.select("circle.dimple-b").datum().zValue+" players)");
+
         };
       </script>
   </head>
