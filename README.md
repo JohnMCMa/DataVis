@@ -30,17 +30,53 @@ Therefore, the scatter plot was heavily changed to visualize the *group means* o
 Since I no longer intend to show the exponential relationship between AVG and HR, the Y-axis for HR was no longer log-scaled, and given the small number of data points, the limits of the axes were hand-adjusted to maximize the size of the dots.
 
 In addition, based on feedback I have also removed the grid lines to decrease the amount of ink on the plot.
+
+**Note**: Due to issues I have with Github this draft is not shown up in the repo's history. A more complete history of this draft and the next can be view in my [Gist](https://gist.github.com/JohnMCMa/56998a61645f3db3a643b91281df23fe).
 ## Design Changes after the third round of feedback ##
 The last round of feedback indicates the axis labels were unclear about what these numbers, so I clarified those were group averages, and the number of players per group were also plotted on the circles by calling the `__data__` objects. The main graph title was also edited to show this is a group-based comparison.
 
 While not initiated by any feedback, I have also unified the `font-family` attributes of all text-based items on the visualization to `sans-serif`.
 # Feedback #
-## After first draft ##
-## After second draft ##
-## After third draft ##
-## After final draft ##
+## First draft ##
+[Feedback on the first draft](https://discussions.udacity.com/t/need-feedback-for-p6-baseball/185799) was requested on Udacity forums in late August. After handling technical issues on setting up the Gist, I have only received one feedback from Myles. The main comments surrounding the visualization are:
+
+- A lack of comment to explain the aim of the visualization,
+- While the positive relationship between the HR and AVG is visible, the visualization provided no clear relationship between handedness and both HR and AVG.
+
+Because of this I attempted to create visualizations for the central tendencies between the handedness groups as described above.
+## Second draft ##
+[Feedback for the second draft](https://discussions.udacity.com/t/feedback-for-second-draft-for-baseball/189573) was requested on September 20, 2016, which also included the intended narrative and discussed the data transformations used.
+
+Two users, "georgeliu" and "CtrlAltDel" responded to the request. Both users opined that:
+
+- The visualization was overly busy and distracting to the viewer, and
+- The gridlines can be removed, as the usage of mouseover effects makes the gridlines unnecessary.
+- Further introduction is needed.
+
+"CtrlAltDel" also opined:
+
+- I should explore some other types of encoding for the visualization, and
+- Considering using the proportion of home runs on the Y-axis.
+
+The first three points have been implemented in the next draft by concentrating on the narrative about handedness and performance, removing the gridlines, writing an introduction that is similar to the current summary, and changing the graph headline.
+
+However, as for CtrlAltDel's other suggestions, he had latter conceded that his second opinion is logically faulty. as for his suggestion, it's my own opinion that scatter plot is adequate to visualize two continuous and one categorical variables, and the ability to visualize both continuous variables can be important, so I maintained the use of scatter plot, but with heavy changes.
+## Third draft ##
+[Feedback for the third draft](https://discussions.udacity.com/t/feedback-request-for-p6-baseball/189922) was requested on September 22, 2016. Only one person, luismirandacruz, responded. His opinion included the following:
+
+- The graphic is overly large and is hard to read,
+- It is unclear if I intended to compare HR and AVG,
+- Whether the home run count is in "average per player", and
+- The variables in the visualization are not self-explanatory. E.g., the size of the circles; suggesting I make it clear by labelling the number of players inside the circle.
+
+I have fully implemented his third point in the final draft by clarifying in the axis labels that they are *group* averages, and took his advice on the fourth point on labelling the circles with the appropriate player counts, I decided to not act on his first two points. The resolution used in the SVG is 1400px X 800px, which is inherited from some of this course's projects and should be acceptable in modern monitors. As for the second point, since I do intend to compare the AVG and HR between the handedness groups, it is considered moot.
+
+## Final draft ##
+The final draft is marked as an update for [the third draft's feedback request](https://discussions.udacity.com/t/feedback-request-for-p6-baseball/189922) on September 22, 2016; no response has been received up to date.
+
 # Resources #
 - [Colorbrewer](http://colorbrewer2.org/)
 - [Dimple.js website](http://dimplejs.org/), including examples and documentation
 - [Stack Overflow Question #27535453, *How to normalise subgroups from a grouped data frame in R*](http://stackoverflow.com/questions/27435453/how-to-normalise-subgroups-from-a-grouped-data-frame-in-r), the major inspiration of the code used in `./data/baseball.data.R`.
 - [*SVG Text Element*, Dashingd3js.com](https://www.dashingd3js.com/svg-text-element), the main reference of putting text on circles.
+- [*How to create a bubble chart in R*](http://sharpsightlabs.com/blog/2014/10/31/bubble-chart-in-r-basic/), Sharp Sight Labs.
