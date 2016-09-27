@@ -36,6 +36,10 @@ In addition, based on feedback I have also removed the grid lines to decrease th
 The last round of feedback indicates the axis labels were unclear about what these numbers, so I clarified those were group averages, and the number of players per group were also plotted on the circles by calling the `__data__` objects. The main graph title was also edited to show this is a group-based comparison.
 
 While not initiated by any feedback, I have also unified the `font-family` attributes of all text-based items on the visualization to `sans-serif`.
+## Design Changes after the first submission attempt ##
+The grader noted that the `z` axis in the bubble graph code in Dimple.js controls the *radii* of the bubbles, which would cause inappropriate bubble comparisons. 
+While not completely related to the grader's feedback, I also edited the `z` axis such that the mouseover text--called `getToolTipText` in Dimple.js--refers to the number of players in each handedness group in the mouseover text as "Number of players" rather than the non-indicative "name."
+
 # Feedback #
 ## First draft ##
 [Feedback on the first draft](https://discussions.udacity.com/t/need-feedback-for-p6-baseball/185799) was requested on Udacity forums in late August. After handling technical issues on setting up the Gist, I have only received one feedback from Myles. The main comments surrounding the visualization are:
