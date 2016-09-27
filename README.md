@@ -7,7 +7,7 @@ From my exploratory data analyses, I have noticed that:
 - Right-handed players have lower average AVG and HR than other handedness groups, and
 - AVG and HR are exponentially related.
 
-As a result, I attempted to demonstrate this two trends by using a simple scatter plot.. Because AVG and HR are exponentially related, I decided that HR should be log-scaled.
+As a result, I attempted to demonstrate this two trends by using a simple scatter plot, owing to the fact that these two variables are continuous variables and I intend to show their relationships. Because AVG and HR are exponentially related, I decided that HR should be log-scaled.
 
 Rather than the default color scheme used by Dimple.js, I used [ColourBrewer Qualitative 3-Class Dark2 scheme](http://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=3), which is colorblind-safe.
 
@@ -17,15 +17,15 @@ The only feedback I obtained from the first draft is that the while it communica
 1. Since AVG is a ratio between 0 to 1 and HR is a count, they are both first rescaled to a 0-100 scale.
 2. For each handedness group, the geometric center point on the Cartesian plane is calculated as (group AVG mean, group HR mean).
 3. Euclidean distances between each player and their corresponding group's center point were calculated.
-4. The percentiles of the distances from group centers in (3) were determinated for each player.
+4. The percentiles of the distances from group centers in (3) were determined for each player.
 
 The output of this R script is written as `./data/baseball_data_remodeled.csv`.
 
-Within the HTML file, JavaScript was used to subset `data` for those players that are at the lowest distance quantile as `data_filtered`. `data_filtered` was then used to draw dual-measure area charts and superimposed over the original scatter plot, which was plotted using the unfiltered data. Separate legends tracks were generated to the two serieses and hand-tuned to match the series' aesthetics.
+Within the HTML file, JavaScript was used to subset `data` for those players that are at the lowest distance quantile as `data_filtered`. `data_filtered` was then used to draw dual-measure area charts and superimposed over the original scatter plot, which was plotted using the unfiltered data. Separate legends tracks were generated to the two series and hand-tuned to match the series' aesthetics.
 ## Design Changes after the second round of feedback ##
 Commentators noted the second draft was overly busy and the narrative is still unclear. Therefore I decided to remove one narrative, i.e. the exponential relationship between AVG and HR, from the visualization. This is because the Project's Data Set Options page prefers a visualization that *shows differences among the performance of the baseball players*, thus the relationship between AVG and HR is less important.
 
-Therefore, the scatter plot was heavily changed to visualize the *group means* of AVG and HR, with the sizes of the circles controlled by the number of players within the handedness group.
+The coding of the narrative was also changed. Since I am now only presenting *group means* of AVG and HR, normal scatter plot is no longer appropriate as I am no longer visualizing the relationship between individual players' performance metrics. However, since AVG and HR are both continuous variables, I decided to use bubble chart, a similar coding. In a bubble chart, each bubble represents each group and the bubble size is proportional of the number of players within the group.
 
 Since I no longer intend to show the exponential relationship between AVG and HR, the Y-axis for HR was no longer log-scaled, and given the small number of data points, the limits of the axes were hand-adjusted to maximize the size of the dots.
 
@@ -37,8 +37,9 @@ The last round of feedback indicates the axis labels were unclear about what the
 
 While not initiated by any feedback, I have also unified the `font-family` attributes of all text-based items on the visualization to `sans-serif`.
 ## Design Changes after the first submission attempt ##
-The grader noted that the `z` axis in the bubble graph code in Dimple.js controls the *radii* of the bubbles, which would cause inappropriate bubble comparisons. 
-While not completely related to the grader's feedback, I also edited the `z` axis such that the mouseover text--called `getToolTipText` in Dimple.js--refers to the number of players in each handedness group in the mouseover text as "Number of players" rather than the non-indicative "name."
+The grader noted that the `z` axis in the bubble graph code in Dimple.js controls the *radii* of the bubbles, which would cause inappropriate bubble comparisons. Based on his recommendations, I rescaled the basis for radius determination in Dimple.js (`__data__.r`) to `30*Math.sqrt(r)`. The constant factor of 30 was added to prevent Dimple.js from drawing bubbles of radii `Math.sqrt(r)`, which means even for the largest group (right-handed players), the plotted bubble will only a radius of 28 pixels. The number 30 was chosen to be such that the bubble for right-handed group would be similar in size as the previous one.
+
+While not completely related to the grader's feedback, I also edited the `z` axis from the Dimple.js object such that the mouseover text--called `getToolTipText` in Dimple.js--refers to the number of players in each handedness group in the mouseover text as "Number of players" rather than the non-indicative "name." As a result, the group sizes plotted on top of the bubbles were removed as unnecessary.
 
 # Feedback #
 ## First draft ##
@@ -62,7 +63,7 @@ Two users, "georgeliu" and "CtrlAltDel" responded to the request. Both users opi
 - I should explore some other types of encoding for the visualization, and
 - Considering using the proportion of home runs on the Y-axis.
 
-The first three points have been implemented in the next draft by concentrating on the narrative about handedness and performance, removing the gridlines, writing an introduction that is similar to the current summary, and changing the graph headline.
+The first three points have been implemented in the next draft by concentrating on the narrative about handedness and performance (and thus effectively changing the visualization into a bubble graph), removing the gridlines, writing an introduction that is similar to the current summary, and changing the graph headline.
 
 However, as for CtrlAltDel's other suggestions, he had latter conceded that his second opinion is logically faulty. as for his suggestion, it's my own opinion that scatter plot is adequate to visualize two continuous and one categorical variables, and the ability to visualize both continuous variables can be important, so I maintained the use of scatter plot, but with heavy changes.
 ## Third draft ##
@@ -76,7 +77,14 @@ However, as for CtrlAltDel's other suggestions, he had latter conceded that his 
 I have fully implemented his third point in the final draft by clarifying in the axis labels that they are *group* averages, and took his advice on the fourth point on labelling the circles with the appropriate player counts, I decided to not act on his first two points. The resolution used in the SVG is 1400px X 800px, which is inherited from some of this course's projects and should be acceptable in modern monitors. As for the second point, since I do intend to compare the AVG and HR between the handedness groups, it is considered moot.
 
 ## Final draft ##
-The final draft is marked as an update for [the third draft's feedback request](https://discussions.udacity.com/t/feedback-request-for-p6-baseball/189922) on September 22, 2016; no response has been received up to date.
+The final draft is marked as an update for [the third draft's feedback request](https://discussions.udacity.com/t/feedback-request-for-p6-baseball/189922) on September 22, 2016; no response has been received as of date of first submission.
+
+## First submission ##
+The grader requested several changes from the project as visualization is concerned:
+
+- The circle radii in Dimple.js' bubble plots should be encoded to the *square root* of the variable, rather than the default of the untransformed variable. "Otherwise, doubling the value will end up quadrupling the area, which isn't a fair representation of the relationship."
+- "The text for right handed players isn't matching the count in the tooltip", and
+- "The visualization doesn't make it clear what variable is encoded to circle radius. Make sure there's a note on the chart about what is being encoded; alternatively or in addition, the tooltip text could be changed to say something like "sample size"."
 
 # Resources #
 - [Colorbrewer](http://colorbrewer2.org/)
@@ -84,3 +92,4 @@ The final draft is marked as an update for [the third draft's feedback request](
 - [Stack Overflow Question #27535453, *How to normalise subgroups from a grouped data frame in R*](http://stackoverflow.com/questions/27435453/how-to-normalise-subgroups-from-a-grouped-data-frame-in-r), the major inspiration of the code used in `./data/baseball.data.R`.
 - [*SVG Text Element*, Dashingd3js.com](https://www.dashingd3js.com/svg-text-element), the main reference of putting text on circles.
 - [*How to create a bubble chart in R*](http://sharpsightlabs.com/blog/2014/10/31/bubble-chart-in-r-basic/), Sharp Sight Labs.
+- [Stack Overflow Question #11336251, *Accessing d3.js element attributes from the datum?*](http://stackoverflow.com/questions/11336251/accessing-d3-js-element-attributes-from-the-datum)
