@@ -39,6 +39,8 @@ While not initiated by any feedback, I have also unified the `font-family` attri
 ## Design Changes after the first submission attempt ##
 The grader noted that the `z` axis in the bubble graph code in Dimple.js controls the *radii* of the bubbles, which would cause inappropriate bubble comparisons. Based on his recommendations, I rescaled the basis for radius determination in Dimple.js (`__data__.r`) to `30*Math.sqrt(r)`. The constant factor of 30 was added to prevent Dimple.js from drawing bubbles of radii `Math.sqrt(r)`, which means even for the largest group (right-handed players), the plotted bubble will only a radius of 28 pixels. The number 30 was chosen to be such that the bubble for right-handed group would be similar in size as the previous one.
 
+I also implemented the suggested change to remove players with zero AVG and changing the title.
+
 While not completely related to the grader's feedback, I also edited the `z` axis from the Dimple.js object such that the mouseover text--called `getToolTipText` in Dimple.js--refers to the number of players in each handedness group in the mouseover text as "Number of players" rather than the non-indicative "name." As a result, the group sizes plotted on top of the bubbles were removed as unnecessary.
 
 # Feedback #
@@ -85,6 +87,8 @@ The grader requested several changes from the project as visualization is concer
 - The circle radii in Dimple.js' bubble plots should be encoded to the *square root* of the variable, rather than the default of the untransformed variable. "Otherwise, doubling the value will end up quadrupling the area, which isn't a fair representation of the relationship."
 - "The text for right handed players isn't matching the count in the tooltip", and
 - "The visualization doesn't make it clear what variable is encoded to circle radius. Make sure there's a note on the chart about what is being encoded; alternatively or in addition, the tooltip text could be changed to say something like "sample size"."
+- The title should be changed to one more acceptable to a explanatory visualization.
+- The data set should be filtered to removed players with zero AVG, as those are probably pitchers who never batted.
 
 # Resources #
 - [Colorbrewer](http://colorbrewer2.org/)

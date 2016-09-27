@@ -2,131 +2,139 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <style>
-        h2 {
-            text-align: center;
-            font-family: sans-serif;
-        }
-        
-        svg {
-            position: relative;
-        }
-    </style>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+	<meta charset="utf-8">
+	<style>
+		h2 {
+			text-align: center;
+			font-family: sans-serif;
+		}
+		
+		svg {
+			position: relative;
+		}
+	</style>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 
-    <script type="text/javascript">
-        function draw(data) {
-            "use strict";
+	<script type="text/javascript">
+		function draw(data) {
+			"use strict";
 
-            /*
-            D3.js setup code
-            */
+			/*
+			 *Filtering players with zero AVG 
+			 */
 
-            var margin = 200,
-                width = 1400 - margin,
-                height = 800 - margin;
+			var data_filtered = data.filter(function(el) {
+				return (Number(el.avg) > 0);
+			});
 
-            d3.select("body").append("h2").text("In a sample of 1,157 baseball players, left handed players outperform on average");
+			/*
+			D3.js setup code
+			*/
 
-            var svg = d3.select("body")
-                .append("svg")
-                .attr("width", width + margin)
-                .attr("height", height + margin)
-                .attr("align", "center")
-                .append('g')
-                .attr('class', 'chart');
+			var margin = 200,
+				width = 1400 - margin,
+				height = 800 - margin;
 
-            /*
-            	Dimple.js Chart construction code
-            */
+			d3.select("body").append("h2").text("In a sample of baseball players, left handed players outperform on average");
 
-            /* Declaring the Dimple.js chart object */
-            var myChart = new dimple.chart(svg, data);
+			var svg = d3.select("body")
+				.append("svg")
+				.attr("width", width + margin)
+				.attr("height", height + margin)
+				.attr("align", "center")
+				.append('g')
+				.attr('class', 'chart');
 
-            /* Declaring the y-axis for HR, manually setting the range, adding labels,
-            and removing grid lines.*/
-            var y = myChart.addMeasureAxis("y", "HR");
-            y.title = "Mean Home Runs";
-            y.fontSize = 'auto';
-            y.overrideMin = 20;
-            y.overrideMax = 70;
-            y.showGridlines = false;
+			/*
+				Dimple.js Chart construction code
+			*/
 
-            /* Declaring the x-axis for avg, manually setting the range, adding labels,
-            removing grid lines, and make sure the ticks are correct to 3 decimal places.*/
-            var x = myChart.addMeasureAxis("x", "avg");
-            x.title = "Mean Battling Average"
-            x.tickFormat = ".3f";
-            x.fontSize = 'auto';
-            x.overrideMin = 0.16;
-            x.overrideMax = 0.21;
-            x.showGridlines = false;
+			/* Declaring the Dimple.js chart object */
+			var myChart = new dimple.chart(svg, data_filtered);
 
-            /* Setting up the Z-axis for bubble sizes based on the count of unique
-            player names.*/
-            var z = myChart.addMeasureAxis("z", "name");
+			/* Declaring the y-axis for HR, manually setting the range, adding labels,
+			and removing grid lines.*/
+			var y = myChart.addMeasureAxis("y", "HR");
+			y.title = "Mean Home Runs";
+			y.fontSize = 'auto';
+			y.overrideMin = 30;
+			y.overrideMax = 75;
+			y.showGridlines = false;
 
-            /*Adding a bubble graph series, where the data are segregated by handedness
-            and their x- and y-coordinates are represented by group averages.*/
-            var bubble_series = myChart.addSeries(["handedness"], dimple.plot.bubble);
-            bubble_series.aggregate = dimple.aggregateMethod.avg;
+			/* Declaring the x-axis for avg, manually setting the range, adding labels,
+			removing grid lines, and make sure the ticks are correct to 3 decimal places.*/
+			var x = myChart.addMeasureAxis("x", "avg");
+			x.title = "Mean Battling Average"
+			x.tickFormat = ".3f";
+			x.fontSize = 'auto';
+			x.overrideMin = 0.23;
+			x.overrideMax = 0.26;
+			x.showGridlines = false;
 
-            /* Overriding Dimple.js' default color scheme with Colorbrewer. */
-            myChart.assignColor("L", "#1b9e77");
-            myChart.assignColor("B", "#d95f02");
-            myChart.assignColor("R", "#7570b3");
+			/* Setting up the Z-axis for bubble sizes based on the count of unique
+			player names.*/
+			var z = myChart.addMeasureAxis("z", "name");
 
-            /* Adding chart legends. Manually increasing the padding between legends
-            such that the legend text added later do not overlap other legends.
-            Font size increased for legiability.*/
-            var legend1 = myChart.addLegend("30%", 30, "40%", 100, "left", bubble_series);
-            legend1.horizontalPadding = 300;
-            legend1.fontSize = '20px';
+			/*Adding a bubble graph series, where the data are segregated by handedness
+			and their x- and y-coordinates are represented by group averages.*/
+			var bubble_series = myChart.addSeries(["handedness"], dimple.plot.bubble);
+			bubble_series.aggregate = dimple.aggregateMethod.avg;
 
-            myChart.draw();
+			/* Overriding Dimple.js' default color scheme with Colorbrewer. */
+			myChart.assignColor("L", "#1b9e77");
+			myChart.assignColor("B", "#d95f02");
+			myChart.assignColor("R", "#7570b3");
 
-            /*The line ensures the tooltip text uses the more indicative "Number of Players"
-            instead of "name."  */
-            z.measure = "Number of Players";
+			/* Adding chart legends. Manually increasing the padding between legends
+			such that the legend text added later do not overlap other legends.
+			Font size increased for legiability.*/
+			var legend1 = myChart.addLegend("30%", 30, "50%", 100, "left", bubble_series);
+			legend1.horizontalPadding = 300;
+			legend1.fontSize = '20px';
 
-            /* Dimple.js by default scales bubbles in bubble graphs by radius. (Lines 32-49 of _helpers.js in their source),
-            which would cause some misleading results, since doubling the data would quadiple the bubble size.
-            To be precise, this line replaces the "r" variables in the background DOM data with 30*sqrt(r); the constant mutliple
-            of 30 was added to avoid the resulting bubbles from being too small from the square-root transformation.
-            This code is partly based on mathheadincloud's answer in http://stackoverflow.com/questions/11336251/accessing-d3-js-element-attributes-from-the-datum.
-            */
-            d3.selectAll('circle').each(function(d, i) {
-                var elt = d3.select(this);
-                elt.datum().r = 30 * Math.sqrt(elt.datum().r);
-            });
+			myChart.draw();
 
-            /* myChart.draw() needs to be called again with noDataChange flag set to false; else the radii won't be updated. */
-            myChart.draw(null, true);
+			/*The line ensures the tooltip text uses the more indicative "Number of Players"
+			instead of "name."  */
+			z.measure = "Number of Players";
 
-            /*
-            Changing the text on the legends. By default the legend text is just "L", "R" and "B", which is non-indicative.
-            These lines changes "L", "R" and "B" into their human-readable counterparts.
-              
-            This needs to be called the last as myChart.draw() resets the legend text.
-            */
-            svg.selectAll("text.dimple-l").text("Left-handed");
-            svg.selectAll("text.dimple-r").text("Right-handed");
-            svg.selectAll("text.dimple-b").text("Both-handed");
+			/* Dimple.js by default scales bubbles in bubble graphs by radius. (Lines 32-49 of _helpers.js in their source),
+			which would cause some misleading results, since doubling the data would quadiple the bubble size.
+			To be precise, this line replaces the "r" variables in the background DOM data with 30*sqrt(r); the constant mutliple
+			of 30 was added to avoid the resulting bubbles from being too small from the square-root transformation.
+			This code is partly based on mathheadincloud's answer in http://stackoverflow.com/questions/11336251/accessing-d3-js-element-attributes-from-the-datum.
+			*/
+			d3.selectAll('circle').each(function(d, i) {
+				var elt = d3.select(this);
+				elt.datum().r = 30 * Math.sqrt(elt.datum().r);
+			});
 
-        };
-    </script>
+			/* myChart.draw() needs to be called again with noDataChange flag set to false; else the radii won't be updated. */
+			myChart.draw(null, true);
+
+			/*
+			Changing the text on the legends. By default the legend text is just "L", "R" and "B", which is non-indicative.
+			These lines changes "L", "R" and "B" into their human-readable counterparts.
+			  
+			This needs to be called the last as myChart.draw() resets the legend text.
+			*/
+			svg.selectAll("text.dimple-l").text("Left-handed");
+			svg.selectAll("text.dimple-r").text("Right-handed");
+			svg.selectAll("text.dimple-b").text("Both-handed");
+
+		};
+	</script>
 </head>
 
 <body>
-    <script type="text/javascript">
-        /*
-            Use D3 (not dimple.js) to load the TSV file
-            and pass the contents of it to the draw function
-            */
-        d3.csv("./baseball_data.csv", draw);
-    </script>
+	<script type="text/javascript">
+		/*
+		 Use D3 (not dimple.js) to load the TSV file
+		 and pass the contents of it to the draw function
+		 */
+		d3.csv("./baseball_data.csv", draw);
+	</script>
 </body>
 
 </html>
